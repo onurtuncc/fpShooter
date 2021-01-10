@@ -58,8 +58,7 @@ public class Weapon : MonoBehaviour
         topAnim.SetTrigger("reload");
         gunAnim.SetTrigger("reload");
         StartCoroutine(SarjorFulle());
-        
-        
+
     }
 
    
@@ -68,11 +67,12 @@ public class Weapon : MonoBehaviour
     {
         int t_sarjkapasite = loadout[currentIndex].sarjorKapasite;
         
-        yield return new WaitForSeconds(3.5f);
-        if (t_sarjkapasite > fullsarjor)
+        yield return new WaitForSeconds(4f);
+        if (t_sarjkapasite -sarjor> fullsarjor)
         {
-            sarjor = fullsarjor;
-            fullsarjor = 0;
+            
+            sarjor += fullsarjor;
+            fullsarjor=0;
         }
         else
         {
