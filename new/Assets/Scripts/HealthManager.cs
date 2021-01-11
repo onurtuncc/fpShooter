@@ -8,12 +8,8 @@ public class HealthManager : MonoBehaviour
     public Text healthText;
     int health = 100;
     bool alive = true;
-    private void Update()
-    {
-        
-        
-    }
-    void TakeDamage(int damage)
+    
+    public void TakeDamage(int damage)
     {
         health -= damage;
         if (health <= 0)

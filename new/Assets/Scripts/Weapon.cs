@@ -17,11 +17,11 @@ public class Weapon : MonoBehaviour
     int sarjor = 0;
     int fullsarjor = 0;
     public Text sarjorText;
+    bool isReloading = false;
     public Text fullSarjorText;
     void Start()
     {
         currentWeapon = null;
-        
         
     }
 
@@ -39,7 +39,7 @@ public class Weapon : MonoBehaviour
                 }
             }
             Aim(Input.GetMouseButton(1));
-            if (Input.GetMouseButton(0) && currentCooldown<=0 && sarjor>0)
+            if (Input.GetMouseButton(0) && currentCooldown<=0 && sarjor>0 && !isReloading)
             {
                 Shoot();
                 
@@ -57,6 +57,7 @@ public class Weapon : MonoBehaviour
 
         topAnim.SetTrigger("reload");
         gunAnim.SetTrigger("reload");
+        isReloading = true;
         StartCoroutine(SarjorFulle());
 
     }
@@ -83,6 +84,7 @@ public class Weapon : MonoBehaviour
         
         sarjorText.text = sarjor.ToString();
         fullSarjorText.text = fullsarjor.ToString();
+        isReloading = false;
     }
     public void Equip(int weaponIndex)
     {
@@ -132,16 +134,21 @@ public class Weapon : MonoBehaviour
         t_sekme.Normalize();
         gunAnim.SetTrigger("firing");
         topAnim.SetTrigger("firing");
-
-
         //raycast
         RaycastHit t_hit = new RaycastHit();
         if(Physics.Raycast( t_spawn.position,t_sekme,out t_hit, 1000f, canBeShot))
         {
-            GameObject t_newHole = Instantiate(bulletHolePrefab, t_hit.point + t_hit.normal * 0.001f, Quaternion.identity) as GameObject;
+            Transform t_parent = null;
+            //Checking if we shoot enemy
+            if (t_hit.collider.gameObject.layer == 11)
+            {
+                t_parent = t_hit.collider.gameObject.transform;
+                EnemyAI t_attackB = t_hit.collider.gameObject.GetComponent<EnemyAI>();
+                t_attackB.attackStyle.TakeDamage(loadout[currentIndex].damage);
+            }
+            GameObject t_newHole = Instantiate(bulletHolePrefab, t_hit.point + t_hit.normal * 0.001f, Quaternion.identity,t_parent) as GameObject;
             t_newHole.transform.LookAt(t_hit.point + t_hit.normal);
             Destroy(t_newHole, 5f);
-            //Checking if we shoot enemy
             
 
         }

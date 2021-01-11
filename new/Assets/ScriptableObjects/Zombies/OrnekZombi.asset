@@ -12,7 +12,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ba53cafcb7fb48e4dab3badec110491d, type: 3}
   m_Name: OrnekZombi
   m_EditorClassIdentifier: 
-  damage: 0
-  health: 600
-  speed: 0
-  prefab: {fileID: 1662007813743402644, guid: 8925a184c8187b2478217e330e595bb9, type: 3}
+  prefab: {fileID: 5304787318994278791, guid: 5867619ac2163984b99e30af30de6293, type: 3}

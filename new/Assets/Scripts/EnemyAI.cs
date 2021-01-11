@@ -5,25 +5,24 @@ using UnityEngine.AI;
 
 public class EnemyAI : MonoBehaviour
 {
-    public NavMeshAgent agent;
+    Zombi zombies;
+    NavMeshAgent agent;
+    public AttackBehaviour attackStyle;
     Transform player;
     public LayerMask whatIsGround, whatIsPlayer;
-
-
     //Gezinme
-    public Vector3 walkPoint;
+    Vector3 walkPoint=Vector3.zero;
     bool walkPointSet;
     public float walkPointRange;
-
     //Attacking
-    public float timeBetweenAttacks=2f;
+    float timeBetweenAttacks=2f;
     bool alreadyAttacked=false;
-
     //States
     public float sightRange, attackRange;
     public bool playerInSightRange, playerInAttackRange;
     private void Awake()
     {
+        attackStyle = GetComponent<AttackBehaviour>();
         player = GameObject.FindGameObjectWithTag("Player").transform;
         agent = GetComponent<NavMeshAgent>();
     }
@@ -32,11 +31,9 @@ public class EnemyAI : MonoBehaviour
         //Check for sight and attack range
         playerInSightRange = Physics.CheckSphere(transform.position, sightRange, whatIsPlayer);
         playerInAttackRange = Physics.CheckSphere(transform.position, attackRange, whatIsPlayer);
-
         if (!playerInSightRange && !playerInAttackRange) Patroling();
         if (playerInSightRange && !playerInAttackRange) ChasePlayer();
         if (playerInAttackRange) AttackPlayer();
-
     }
     private void Patroling()
     {
@@ -74,8 +71,7 @@ public class EnemyAI : MonoBehaviour
         if (!alreadyAttacked)
         {
             //Attack code here
-
-            
+            attackStyle.Attack();
             alreadyAttacked = true;
             
             Invoke(nameof(ResetAttack), timeBetweenAttacks);
@@ -86,6 +82,7 @@ public class EnemyAI : MonoBehaviour
     {
         alreadyAttacked = false;
     }
+    
 }
  
 
