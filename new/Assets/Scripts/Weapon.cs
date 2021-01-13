@@ -5,9 +5,11 @@ using UnityEngine.UI;
 
 public class Weapon : MonoBehaviour
 {
+    #region variables
     public Gun[] loadout;
     public Transform weaponParent;
     GameObject currentWeapon;
+    EnemyAI enemyai;
     float currentCooldown=0;
     int currentIndex;
     public GameObject bulletHolePrefab;
@@ -19,8 +21,11 @@ public class Weapon : MonoBehaviour
     public Text sarjorText;
     bool isReloading = false;
     public Text fullSarjorText;
+    #endregion
+    #region monobehaviour callbacks
     void Start()
     {
+        
         currentWeapon = null;
         
     }
@@ -52,6 +57,8 @@ public class Weapon : MonoBehaviour
         }
 
     }
+    #endregion
+    #region private methods
     private void Reload()
     {
 
@@ -102,7 +109,7 @@ public class Weapon : MonoBehaviour
             fullsarjor = sarjor * 3;
             sarjorText.text = sarjor.ToString();
             fullSarjorText.text = fullsarjor.ToString();
-            
+           
         }
         
     }
@@ -124,7 +131,7 @@ public class Weapon : MonoBehaviour
     }
     void Shoot()
     {
-
+        
         Transform t_spawn = transform.Find("Top/Normal Camera");
         //Silahın sekmesi
         Vector3 t_sekme = t_spawn.position +t_spawn.forward*1000f;
@@ -143,8 +150,10 @@ public class Weapon : MonoBehaviour
             if (t_hit.collider.gameObject.layer == 11)
             {
                 t_parent = t_hit.collider.gameObject.transform;
-                EnemyAI t_attackB = t_hit.collider.gameObject.GetComponent<EnemyAI>();
-                t_attackB.attackStyle.TakeDamage(loadout[currentIndex].damage);
+                enemyai = t_hit.collider.gameObject.GetComponent<EnemyAI>();
+                enemyai.TakeDamage(loadout[currentIndex].damage);
+                
+                
             }
             GameObject t_newHole = Instantiate(bulletHolePrefab, t_hit.point + t_hit.normal * 0.001f, Quaternion.identity,t_parent) as GameObject;
             t_newHole.transform.LookAt(t_hit.point + t_hit.normal);
@@ -166,9 +175,6 @@ public class Weapon : MonoBehaviour
 
 
     }
-  
-
-
-
+    #endregion
 
 }

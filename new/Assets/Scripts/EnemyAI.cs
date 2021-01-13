@@ -5,25 +5,26 @@ using UnityEngine.AI;
 
 public class EnemyAI : MonoBehaviour
 {
-    Zombi zombies;
-    NavMeshAgent agent;
-    public AttackBehaviour attackStyle;
+    #region variables
+    public int health = 1000;
+    public float sightRange, attackRange;
+    public NavMeshAgent agent;
     Transform player;
     public LayerMask whatIsGround, whatIsPlayer;
     //Gezinme
     Vector3 walkPoint=Vector3.zero;
     bool walkPointSet;
     public float walkPointRange;
-    //Attacking
-    float timeBetweenAttacks=2f;
-    bool alreadyAttacked=false;
     //States
-    public float sightRange, attackRange;
-    public bool playerInSightRange, playerInAttackRange;
+   
+    public bool playerInSightRange, playerInAttackRange=false;
+    #endregion
+    #region monobehavioue callbacks
     private void Awake()
     {
-        attackStyle = GetComponent<AttackBehaviour>();
+        
         player = GameObject.FindGameObjectWithTag("Player").transform;
+        
         agent = GetComponent<NavMeshAgent>();
     }
     private void Update()
@@ -33,8 +34,10 @@ public class EnemyAI : MonoBehaviour
         playerInAttackRange = Physics.CheckSphere(transform.position, attackRange, whatIsPlayer);
         if (!playerInSightRange && !playerInAttackRange) Patroling();
         if (playerInSightRange && !playerInAttackRange) ChasePlayer();
-        if (playerInAttackRange) AttackPlayer();
+        
     }
+    #endregion
+    #region private methods
     private void Patroling()
     {
         if (!walkPointSet) SearchWalkPoint();
@@ -62,27 +65,18 @@ public class EnemyAI : MonoBehaviour
     {
         agent.SetDestination(player.position);
     }
-    private void AttackPlayer()
+    public void TakeDamage(int takenDamage)
     {
-        //Make sure enemy doesnt move
-        agent.SetDestination(transform.position);
-        transform.LookAt(player);
-
-        if (!alreadyAttacked)
+        health -= takenDamage;
+        if (health <= 0)
         {
-            //Attack code here
-            attackStyle.Attack();
-            alreadyAttacked = true;
-            
-            Invoke(nameof(ResetAttack), timeBetweenAttacks);
-           
+            //Play die animation
+            Destroy(gameObject, 0.5f);
         }
     }
-    private void ResetAttack()
-    {
-        alreadyAttacked = false;
-    }
-    
+    #endregion
+
+
 }
- 
+
 

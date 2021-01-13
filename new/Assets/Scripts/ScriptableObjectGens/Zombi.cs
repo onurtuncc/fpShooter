@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "New Zombie", menuName = "Zombie")]
-public class Zombi : ScriptableObject
+public class Zombi:ScriptableObject
 {
     
-    public GameObject prefab;
+
 }

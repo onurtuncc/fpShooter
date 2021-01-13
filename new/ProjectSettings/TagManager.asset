@@ -6,6 +6,7 @@ TagManager:
   tags:
   - lootable
   - medkit
+  - muzzle
   layers:
   - Default
   - TransparentFX

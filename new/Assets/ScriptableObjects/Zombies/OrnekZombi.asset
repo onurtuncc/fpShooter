@@ -12,4 +12,3 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ba53cafcb7fb48e4dab3badec110491d, type: 3}
   m_Name: OrnekZombi
   m_EditorClassIdentifier: 
-  prefab: {fileID: 5304787318994278791, guid: 5867619ac2163984b99e30af30de6293, type: 3}
